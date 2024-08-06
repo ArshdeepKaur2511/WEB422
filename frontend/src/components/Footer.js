@@ -3,7 +3,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="footer footer-center bg-base-200 text-base-content rounded p-10">
+    <footer className="footer footer-center bg-base-300 text-base-content rounded p-10">
   <nav className="grid grid-flow-col gap-4">
     <a className="link link-hover">About</a>
     <a className="link link-hover">Contact</a>
@@ -47,10 +47,54 @@ const Footer = () => {
     </div>
   </nav>
   <aside>
-    <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
+    <p>© {new Date().getFullYear()} Epic Reads - All right reserved</p>
   </aside>
 </footer>
   );
 };
 
 export default Footer;
+// const Footer = () => {
+//   return (
+//     <footer className="footer bg-base-200 p-4 text-center">
+//       <div className="container mx-auto">
+//         <p>&copy; 2024 . All rights reserved.</p>
+//       </div>
+//       <div className="join join-vertical">
+//   <input
+//     type="radio"
+//     name="theme-buttons"
+//     className="btn theme-controller join-item"
+//     aria-label="Default"
+//     value="default" />
+//   <input
+//     type="radio"
+//     name="theme-buttons"
+//     className="btn theme-controller join-item"
+//     aria-label="Retro"
+//     value="retro" />
+//   <input
+//     type="radio"
+//     name="theme-buttons"
+//     className="btn theme-controller join-item"
+//     aria-label="light"
+//     value="light" />
+//   <input
+//     type="radio"
+//     name="theme-buttons"
+//     className="btn theme-controller join-item"
+//     aria-label="lemonade"
+//     value="lemonade" />
+//   <input
+//     type="radio"
+//     name="theme-buttons"
+//     className="btn theme-controller join-item"
+//     aria-label="Aqua"
+//     value="aqua" />
+// </div>
+//     </footer>
+//   );
+// };
+
+// export default Footer;
+

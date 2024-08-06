@@ -1,24 +1,23 @@
-import "@/styles/globals.css";
+// import "@/styles/globals.css";
+// import { SearchQueryProvider } from "@/context/SearchContext";
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
-}
-// src/App.js
-// import React from 'react';
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Layout from '@/components/Layout';
-// import MainPage from '@/components/MainPage';
-
-// const App = () => {
+// export default function App({ Component, pageProps }) {
 //   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<Layout />}>
-//           <Route index element={<MainPage />} />
-//         </Route>
-//       </Routes>
-//     </Router>
-//   );
-// };
+//   <SearchQueryProvider>
+//     <Component {...pageProps} />
+//   </SearchQueryProvider>);
+// }
 
-// export default App;
+import '../styles/globals.css';
+import { Provider } from 'jotai';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <Provider>
+      <Component {...pageProps} />
+    </Provider>
+  );
+}
+
+export default MyApp;
+
