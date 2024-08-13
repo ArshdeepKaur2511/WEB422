@@ -16,9 +16,8 @@ module.exports = {
   },
   plugins: [
     require('daisyui'),
-    // require('merakiui'),
   ],
   daisyui: {
-    themes: ['dark','lemonade','light','retro'],
+    themes: ['dark','luxury','light','lemonade','nord','retro'],
   },
 };

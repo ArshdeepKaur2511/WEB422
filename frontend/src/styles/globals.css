@@ -36,3 +36,9 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* styles.css or global.css */
+.option-theme {
+  @apply text-base-content bg-base-300;
+}
+

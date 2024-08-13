@@ -7,7 +7,7 @@ import Layout from '@/components/Layout';
 import BooksList from '@/components/BooksList';
 import HeroContent from '@/components/HeroContent';
 
-const BooksPage = () => {
+const HomePage = () => {
   const [books, setBooks] = useAtom(booksAtom);
   const [searchQuery] = useAtom(searchQueryAtom);
   const [totalPages, setTotalPages] = useState(0);
@@ -17,14 +17,14 @@ const BooksPage = () => {
 
   useEffect(() => {
     fetchBooks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, searchQuery]);
 
   const fetchBooks = async () => {
     setLoading(true);
     setError('');
     try {
-      let url = `${config.baseURL}/api/book?page=${currentPage}&limit=18`;
+      let url = `${config.baseURL}/api/book?page=${currentPage}&limit=6`;
       if (searchQuery.title || searchQuery.author || searchQuery.category) {
         const params = new URLSearchParams();
         if (searchQuery.title) params.append('title', searchQuery.title);
@@ -34,14 +34,14 @@ const BooksPage = () => {
       }
       const res = await fetch(url);
       if (!res.ok) {
-        throw new Error('Failed to fetch books.');
+        throw new Error('Failed to fetch books');
       }
       const data = await res.json();
       setBooks(data.books || data);
       setTotalPages(data.totalPages || 1);
     } catch (error) {
       console.error('Error fetching books:', error);
-      setError('An error occurred while fetching the books. Please try again later.');
+      setError('An error occurred while fetching books. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -54,20 +54,19 @@ const BooksPage = () => {
   return (
     <Layout>
       <Head>
-        <title>Books</title>
+        <title>Home</title>
       </Head>
       <HeroContent />
       <div className="container mx-auto py-8">
-        <h1 className="text-4xl font-bold mb-8 text-center">Explore More Books...</h1>
-        {loading && <p className="text-center text-primary">Loading books...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
-        {!loading && !error && (
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        {loading ? (
+          <p className="text-center">Loading books...</p>
+        ) : (
           <BooksList
             books={books}
             totalPages={totalPages}
             currentPage={currentPage}
             onPageChange={handlePageChange}
-            className="mt-8"
           />
         )}
       </div>
@@ -75,4 +74,4 @@ const BooksPage = () => {
   );
 };
 
-export default BooksPage;
+export default HomePage;

@@ -1,13 +1,13 @@
-// components/Footer.js
+import Link from 'next/link';
 import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="footer footer-center bg-base-300 text-base-content rounded p-10">
+    <footer className="footer footer-center bg-base-200 text-base-content rounded p-10">
   <nav className="grid grid-flow-col gap-4">
-    <a className="link link-hover">About</a>
-    <a className="link link-hover">Contact</a>
-    <a className="link link-hover">Developers</a>
+    <Link href="/about" className="link link-hover">About</Link>
+    <Link href="/contact" className="link link-hover">Contact</Link>
+    <Link href="/developers" className="link link-hover">Developers</Link>
   </nav>
   <nav>
     <div className="grid grid-flow-col gap-4">
@@ -54,47 +54,3 @@ const Footer = () => {
 };
 
 export default Footer;
-// const Footer = () => {
-//   return (
-//     <footer className="footer bg-base-200 p-4 text-center">
-//       <div className="container mx-auto">
-//         <p>&copy; 2024 . All rights reserved.</p>
-//       </div>
-//       <div className="join join-vertical">
-//   <input
-//     type="radio"
-//     name="theme-buttons"
-//     className="btn theme-controller join-item"
-//     aria-label="Default"
-//     value="default" />
-//   <input
-//     type="radio"
-//     name="theme-buttons"
-//     className="btn theme-controller join-item"
-//     aria-label="Retro"
-//     value="retro" />
-//   <input
-//     type="radio"
-//     name="theme-buttons"
-//     className="btn theme-controller join-item"
-//     aria-label="light"
-//     value="light" />
-//   <input
-//     type="radio"
-//     name="theme-buttons"
-//     className="btn theme-controller join-item"
-//     aria-label="lemonade"
-//     value="lemonade" />
-//   <input
-//     type="radio"
-//     name="theme-buttons"
-//     className="btn theme-controller join-item"
-//     aria-label="Aqua"
-//     value="aqua" />
-// </div>
-//     </footer>
-//   );
-// };
-
-// export default Footer;
-

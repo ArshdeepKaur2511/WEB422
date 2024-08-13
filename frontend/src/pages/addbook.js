@@ -1,10 +1,15 @@
+import Head from 'next/head';
+import config from '@/config/config';
 import { useState } from 'react';
-import Layout from '../components/Layout';
+import { useRouter } from 'next/router';
+import Layout from '@/components/Layout';
 
 const AddBookPage = () => {
   const [formData, setFormData] = useState({
     isbn13: '',
+    isbn10: '',
     title: '',
+    subtitle: '',
     authors: '',
     categories: '',
     thumbnail: '',
@@ -14,52 +19,91 @@ const AddBookPage = () => {
     num_pages: '',
     ratings_count: '',
   });
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const validateForm = () => {
+    if (!formData.isbn13 || !formData.title || !formData.authors || !formData.published_year) {
+      return 'ISBN13, Title, Authors, and Published Year are required fields.';
+    }
+    if (isNaN(formData.average_rating) || isNaN(formData.num_pages) || isNaN(formData.ratings_count)) {
+      return 'Average Rating, Number of Pages, and Ratings Count should be numeric values.';
+    }
+    return '';
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+    setIsSubmitting(true);
     try {
-      const res = await fetch('http://localhost:8080/api/books', {
+      const res = await fetch(`${config.baseURL}/api/book/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify(formData),
       });
       if (res.ok) {
-        alert('Book added successfully');
+        router.push('/books');
       } else {
-        throw new Error('Failed to add book');
+        const errorData = await res.json();
+        setError(errorData.message || 'Failed to add the book.');
       }
     } catch (error) {
-      alert(error.message);
+      console.error('Failed to add book:', error);
+      setError('An error occurred while adding the book.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <Layout>
-      <div className="container mx-auto py-8">
-        <h1 className="text-4xl font-bold mb-4">Add a New Book</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input type="text" name="isbn13" placeholder="ISBN13" className="input input-bordered w-full" onChange={handleChange} required />
-          <input type="text" name="title" placeholder="Title" className="input input-bordered w-full" onChange={handleChange} required />
-          <input type="text" name="authors" placeholder="Authors" className="input input-bordered w-full" onChange={handleChange} />
-          <input type="text" name="categories" placeholder="Categories" className="input input-bordered w-full" onChange={handleChange} />
-          <input type="text" name="thumbnail" placeholder="Thumbnail URL" className="input input-bordered w-full" onChange={handleChange} />
-          <textarea name="description" placeholder="Description" className="textarea textarea-bordered w-full" onChange={handleChange}></textarea>
-          <input type="number" name="published_year" placeholder="Published Year" className="input input-bordered w-full" onChange={handleChange} />
-          <input type="number" name="average_rating" placeholder="Average Rating" className="input input-bordered w-full" onChange={handleChange} />
-          <input type="number" name="num_pages" placeholder="Number of Pages" className="input input-bordered w-full" onChange={handleChange} />
-          <input type="number" name="ratings_count" placeholder="Ratings Count" className="input input-bordered w-full" onChange={handleChange} />
-          <button type="submit" className="btn btn-primary w-full">Add Book</button>
-        </form>
+      <Head>
+        <title>Add Book</title>
+      </Head>
+      <div className="min-h-screen flex flex-col justify-center items-center bg-base-100">
+        <div className="w-full max-w-4xl p-4">
+          <form className="bg-base-200 p-8 rounded shadow-lg" onSubmit={handleSubmit}>
+            <h1 className="text-3xl font-bold mb-6 text-center text-primary">Add Book</h1>
+            {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {Object.keys(formData).map((key) => (
+                <input
+                  key={key}
+                  type="text"
+                  name={key}
+                  placeholder={key.replace('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                  value={formData[key]}
+                  onChange={handleChange}
+                  className="input input-bordered w-full"
+                />
+              ))}
+            </div>
+            <div className="text-center">
+            <button
+                type="submit"
+                className={`btn btn-primary w-1/3 mt-6 ${isSubmitting ? 'loading' : ''}`}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Submitting...' : 'Add Book'}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </Layout>
   );

@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai';
-import { searchQueryAtom } from '../context/atoms';
+import { searchQueryAtom } from '@/context/Atoms';
 import { useState } from 'react';
 
 const SearchBar = () => {
@@ -9,6 +9,10 @@ const SearchBar = () => {
 
   const handleSearch = (event) => {
     event.preventDefault();
+    if (searchValue.trim() === '') {
+      alert('Please enter a value.');
+      return;
+    }
     setSearchQuery((prev) => ({
       ...prev,
       [searchType]: searchValue,
@@ -21,7 +25,7 @@ const SearchBar = () => {
         name="searchType"
         value={searchType}
         onChange={(e) => setSearchType(e.target.value)}
-        className="select select-bordered select-primary"
+        className="select select-bordered select-primary text-base-content"
       >
         <option value="title">Title</option>
         <option value="author">Author</option>
@@ -41,4 +45,3 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
-
